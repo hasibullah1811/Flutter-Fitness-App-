@@ -1,4 +1,5 @@
 import 'package:fitness_app/screens/exercise_hub.dart';
+import 'package:fitness_app/screens/exercise_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -12,6 +13,9 @@ class ExerciseStartScreen extends StatefulWidget {
 }
 
 class _ExerciseStartScreenState extends State<ExerciseStartScreen> {
+  //important variables
+  int seconds = 10;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +62,7 @@ class _ExerciseStartScreenState extends State<ExerciseStartScreen> {
                   child: SleekCircularSlider(
                     appearance: CircularSliderAppearance(),
                     onChange: (double value) {
-                      print(value);
+                      seconds = value.toInt();
                     },
                     initialValue: 30,
                     min: 10,
@@ -77,6 +81,32 @@ class _ExerciseStartScreenState extends State<ExerciseStartScreen> {
                       );
                     },
                   ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExerciseScreen(exercises: widget.exercises, seconds: seconds,),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Start Exercise",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  color: Colors.red,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  splashColor: Colors.blueGrey,
                 ),
               ),
             ],
