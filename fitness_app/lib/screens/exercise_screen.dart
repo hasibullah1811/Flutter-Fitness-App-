@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fitness_app/screens/exercise_hub.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 class ExerciseScreen extends StatefulWidget {
   final Exercises exercises;
   final int seconds;
+  
   ExerciseScreen(
       {@required this.exercises, @required this.seconds}); //Constructor
 
@@ -20,12 +23,18 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
 
   Timer timer;
 
+  AudioPlayer audioPlayer = AudioPlayer();
+  AudioCache audioCache = AudioCache();
+
   @override
   void initState() {
     timer = Timer.periodic(Duration(seconds: 1), (t) {
       if (t.tick == widget.seconds) {
         t.cancel();
-        _isCompleted = true;
+        setState(() {
+          _isCompleted = true;
+        });
+        playAudio();
       }
 
       setState(() {
@@ -39,6 +48,10 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   void dispose() {
     timer.cancel();
     super.dispose();
+  }
+
+  void playAudio(){
+    audioCache.play("cheering1.mp3");
   }
 
   @override
@@ -68,6 +81,15 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                   ),
                 )
               : Container(),
+          
+          SafeArea(
+            child: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
         ],
       ),
     );
